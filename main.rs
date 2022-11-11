@@ -94,10 +94,26 @@ fn alpha_beta(
     let mut result_board = chess::Board::default();
     for mv in moves {
         board.make_move(mv, &mut result_board);
+
+        let value=alpha_beta(&result_board, depth-1, true, alpha, beta, total);
+        best_val = std::cmp::min(value, best_val);
+
+        beta = std::cmp::min(beta, best_val);
+        if beta <= aplha {
+            break;
+        }
     }
+    return best_val;
 }
 
 
+fn show_board(board: Board) {
+    for (&rank, lbl) in ALL_RANKS.iter().zip("1234567".chars()){
+        print!("{}", lbl);
+        
+    }
+
+}
 
 
 fn main(){
