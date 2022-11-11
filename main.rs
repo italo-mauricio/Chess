@@ -114,7 +114,7 @@ fn show_board(board: Board) {
         for sq in get_rank(rank) {
             let piece = board.piece_on(sq);
             let sq_char = match board.color_on(sq){
-                Some(Color::Black) => "",
+                Some(Color::Black) => match.piece {
                     Some(Piece::King) => "♚";
                     Some(Piece::Queen) => "♛";
                     Some(Piece::Rook) => "♜";
@@ -123,8 +123,9 @@ fn show_board(board: Board) {
                     Some(Piece::Pawn) => "♞";
                     _ => "?"
 
-            },
-                Some(Color::White) => "",
+                },
+        
+                Some(Color::White) => match.piece {
                     Some(Piece::King) => "♔";
                     Some(Piece::Queen) => "♕";
                     Some(Piece::Rook) => "♖";
@@ -133,11 +134,11 @@ fn show_board(board: Board) {
                     Some(Piece::Pawn) => "♘";
                     _ => "?"
 
+                },
             },
-        },
 
+        }
     }
-
 }
 
 
