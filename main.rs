@@ -78,8 +78,22 @@ fn alpha_beta(
         let moves = MoveGen::new_legal(&board);
         let mut result_board = chess::Board::default();
         for mv in movie {
-            board.make_move
+            board.make_move(mv, &mut result_board);
+            let value = alpha_beta(&result_board, depth-1, false, aplha, beta, total);
+            best_val = std::cmp::max(value, best_val);
+
+            alpha = std::cmp::max(alpha, best_val);
+            if beta <= alpha {
+                break;
+            }
         }
+    } return best_val;
+}else {
+    let mut best_val = i64::MAX;
+    let moves = MoveGen::new_legal(&board);
+    let mut result_board = chess::Board::default();
+    for mv in moves {
+        board.make_move(mv, &mut result_board);
     }
 }
 
