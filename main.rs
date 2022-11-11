@@ -110,7 +110,32 @@ fn alpha_beta(
 fn show_board(board: Board) {
     for (&rank, lbl) in ALL_RANKS.iter().zip("1234567".chars()){
         print!("{}", lbl);
-        
+        print!(" ");
+        for sq in get_rank(rank) {
+            let piece = board.piece_on(sq);
+            let sq_char = match board.color_on(sq){
+                Some(Color::Black) => "",
+                    Some(Piece::King) => "♚";
+                    Some(Piece::Queen) => "♛";
+                    Some(Piece::Rook) => "♜";
+                    Some(Piece::Bishop) => "♝";
+                    Some(Piece::Knight) => "♟";
+                    Some(Piece::Pawn) => "♞";
+                    _ => "?"
+
+            },
+                Some(Color::White) => "",
+                    Some(Piece::King) => "♔";
+                    Some(Piece::Queen) => "♕";
+                    Some(Piece::Rook) => "♖";
+                    Some(Piece::Bishop) => "♗";
+                    Some(Piece::Knight) => "♙";
+                    Some(Piece::Pawn) => "♘";
+                    _ => "?"
+
+            },
+        },
+
     }
 
 }
