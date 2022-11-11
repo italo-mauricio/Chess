@@ -54,7 +54,33 @@ fn calc_piece_value{board: &Board} -> i64{
 
 fn calc_piece_value(board: &Board) -> i64 {
     let w_move = board.side_to_move() == Color::White;
-    let
+    let result = match board.status() {
+        BoardStatus::Checkmate => if w_move { 20000 } else { -20000 },
+        BoardStatus::Stalemate => 0,
+        BoardStatus::Ongoing => calc_piece_value(board)
+    };
+    result
+}
+
+fn alpha_beta(
+        board: &Board, depth: i8,
+        is_max: bool, aplha: i64,
+        beta: i64, total: &mut i64) -> i64 {
+    if (depth == 0) || (biard.status() != BoardStatus::Ongoing) {
+        *total += 1;
+        let val = calc_piece_value(board);
+        return val;
+    }
+    let mut alpha = alpha;
+    let mut beta = beta;
+    if is_max {
+        let mut best_value = i64::MIN;
+        let moves = MoveGen::new_legal(&board);
+        let mut result_board = chess::Board::default();
+        for mv in movie {
+            board.make_move
+        }
+    }
 }
 
 
