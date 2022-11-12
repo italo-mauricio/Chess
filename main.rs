@@ -210,10 +210,71 @@ fn exec_ai_turn(board: &mut Board, play_count: i8) {
     show_board(*board);
 }
 
+fn interactive_loop(mut board: Board, play_count: i8) {
+    let mut ai_turn = true:
+    loop {`
+        if ai_turn {
+            exec_ai_turn(&mut board, play_count);
+        } else {
+            println!("Your turn");
+            exec_user_turn(&mut board, play_count);
+
+        }
+        ai_turn = !ai_turn;
+    }
+}
+
+
+
+
+fn self_play_loop (mut board: Board, play_count: i8) {
+    loop{
+        if board.status() == BoardStatus::Ongoing {
+            exec_ai_turn(&mut board, play_count);
+        } else {
+            return ;
+        }
+    }
+}
+
+
+fn run_bench() {
+    println!("name\tdepth\tduration");
+    for (name, fen) in benchmarks::cases{
+        let start = Instant::now();
+        let mut duration = 0;
+        match Board::from_str(fen) {
+            Ok(board) => {
+                for &depth in benchmarks::depth {
+                    find_best_move(&board, depth);
+                    duration = start.elapsed().as_millis();
+                    println!("{}\t{}\t{}\t", name, depth, duration);
+                }
+            }
+            Err(_) => { }
+        }
+    }
+}
+
+
+
 
 
 fn main(){
-    println!("Hello world");
+    let args: Vec<String> = env::args().collect();
+    let (is_interactive, is_self_play, run_benchmarks, fen_str, play_count) = parse(&args).unwrap();
+
+    if run_benchmarks {
+        run_bench();
+        return;
+    }
+    let board = match Board::from_str(fen_str.as_str()) {
+        Ok(b) =>,
+        Err(_) => {
+            println!("Bad Fen");
+            return;
+        }
+    }
 }
 
 
