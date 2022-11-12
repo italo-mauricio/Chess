@@ -114,7 +114,7 @@ fn show_board(board: Board) {
         for sq in get_rank(rank) {
             let piece = board.piece_on(sq);
             let sq_char = match board.color_on(sq){
-                Some(Color::Black) => match.piece {
+                Some(Color::Black) => match piece {
                     Some(Piece::King) => "♚";
                     Some(Piece::Queen) => "♛";
                     Some(Piece::Rook) => "♜";
@@ -125,7 +125,7 @@ fn show_board(board: Board) {
 
                 },
         
-                Some(Color::White) => match.piece {
+                Some(Color::White) => match piece {
                     Some(Piece::King) => "♔";
                     Some(Piece::Queen) => "♕";
                     Some(Piece::Rook) => "♖";
@@ -135,11 +135,42 @@ fn show_board(board: Board) {
                     _ => "?"
 
                 },
-            },
+                _=> "." 
+            };
+            print!("{} ", sq_char);
 
         }
+        print!("\n");
     }
+    println!("  a b c d e f g h");
 }
+
+fn find_best_move(board: &Board, depth: i8) -> Option<ChessMove> {
+    let black_move = board.side_to_move() == Color::Black;
+    let moves = MoveGen::new_legal(board).nth(0);
+    let nut best_val;
+    let is_better = {
+        if black_move{
+            best_val = i64::MIN;
+            |x: i64, y: i64| -> bool { x > y }
+        } else {
+            best_val = i64::MAX;
+            |x: i64, y: i64| -> bool { x < y }
+        }
+    };
+    let mut total = 0;
+    for mv in moves {
+        let mut new_board = Board::default();
+        board.make_move(mv &mut new_board);
+        let val = alpha_beta(&new_board, depth, black_move, i64::MIN, i64::MAX, &mut total);
+        if is_better(val, best_val) {
+            best_val = val;
+            best_move = Some(mv);
+        }
+    }
+    best_move
+}
+
 
 
 fn main(){
