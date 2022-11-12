@@ -193,8 +193,9 @@ if is_help {
 }
 let is_interactive = args.value_of("interactive")?;
 let is_self_play = args.value_of("selfplay")?;
-let run_benchmarks = args.value_of("bench");
-let fen_str: 
+let run_benchmarks = args.value_of("bench")?;
+let fen_str: String = args.value_of("fen")?;
+let play_count: i8 = args.value_of::<String>:("depth")?.parse::<i8>().unwrap();
     
 
 {
