@@ -173,34 +173,44 @@ fn find_best_move(board: &Board, depth: i8) -> Option<ChessMove> {
 
 
 fn parse(
-        input: &Vec<String>,
-        ) -> Result<(bool, bool, bool, String, i8), ArgsError>
-    let mut args = Args::new(PROGRAM_NAME, PROGRAM_DESC);
-    args.flag("h", "help", "Print the usage Menu");
-    args.flag("i", "iteractive", "Run the engine in interactive mode");
-    args.flag("s", "selfplay", "Run the engine in selfplay mode");
-    args.flag("b", "bench", "Run Benchmarks");
-    args.flag("d", "depth", "Set the depth of the tree search. Default 4"
-            "DEPTH", Occur::Req, Some("4".to_string())
-);
-    args.flag("f", "fen", "The state of the game as FEN"
-            "FEN", Occur::Optional, Some(STARTING_FEN.to_string())
-);
-args.parse(input)?;
-let is_help = args.value_of("help")?;
-if is_help {
-    args.full_usage();
-}
-let is_interactive = args.value_of("interactive")?;
-let is_self_play = args.value_of("selfplay")?;
-let run_benchmarks = args.value_of("bench")?;
-let fen_str: String = args.value_of("fen")?;
-let play_count: i8 = args.value_of::<String>:("depth")?.parse::<i8>().unwrap();
-    
+            input: &Vec<String>,
+            ) -> Result<(bool, bool, bool, String, i8), ArgsError> {
+        let mut args = Args::new(PROGRAM_NAME, PROGRAM_DESC);
+        args.flag("h", "help", "Print the usage Menu");
+        args.flag("i", "iteractive", "Run the engine in interactive mode");
+        args.flag("s", "selfplay", "Run the engine in selfplay mode");
+        args.flag("b", "bench", "Run Benchmarks");
+        args.flag("d", "depth", "Set the depth of the tree search. Default 4"
+                "DEPTH", Occur::Req, Some("4".to_string())
+    );
+        args.flag("f", "fen", "The state of the game as FEN"
+                "FEN", Occur::Optional, Some(STARTING_FEN.to_string())
+    );
+    args.parse(input)?;
+    let is_help = args.value_of("help")?;
+    if is_help {
+        args.full_usage();
+    }
+    let is_interactive = args.value_of("interactive")?;
+    let is_self_play = args.value_of("selfplay")?;
+    let run_benchmarks = args.value_of("bench")?;
+    let fen_str: String = args.value_of("fen")?;
+    let play_count: i8 = args.value_of::<String>:("depth")?.parse::<i8>().unwrap();
+    println!("Depth: {}", play_count);
+    Ok((is_interactive, is_self_play, run_benchmarks, fen_str, play_count));
 
-{
+}     
 
+fn exec_ai_turn(board: &mut Board, play_count: i8) {
+    match find_best_move(board, play_count) {
+        Some(n) => { *board = board.make_move_new(n)}
+        None => { println!("ERROR: No move found")}
+    }
+    println!("---------------");
+    show_board(*board);
 }
+
+
 
 fn main(){
     println!("Hello world");
